@@ -1,53 +1,75 @@
 # Food Captioning Sederhana (MM-Food-100k)
 
-Proyek penelitian ini bertujuan untuk membangun model Multi-Label Classification berbasis CNN (EfficientNet) yang dapat memprediksi bahan-bahan (`ingredients`) dari gambar makanan.
-
----
-
-## 🚀 Commit Pertama: Data Inspection & Environment Setup
-
-### 1. Environment Setup
-
-Proyek ini menggunakan Python 3.10 dan dikelola dengan `pip` untuk memastikan reproduktifitas di berbagai *platform* (Windows/Linux/Mac).
-
-- **Environment Manager:** Conda (digunakan untuk isolasi).
-- **Package Manager:** Pip (Semua dependensi tercantum di `requirements.txt`).
-- **Instalasi:** Cukup aktifkan *environment* Conda Anda, lalu jalankan:
-  ```bash
-  pip install -r requirements.txt
-  ```
-
-### 2. Tahap Eksplorasi Data (EDA)
-
-Semua eksplorasi data terdapat di `backend/Cek_data-food.ipynb`.
-
-  - **Dataset:** `MM-Food-100k.csv` (100.000 data).
-  - **Inspeksi Kualitas:**
-      - Terdapat **99,998** data pada kolom `dish_name` (2 data *missing*).
-      - Terdapat **98,642** data pada kolom `cooking_method` (1,358 data *missing*).
-  - **Fitur Kunci:** Kolom `image_url` (input) dan `ingredients` (multi-label output).
-  - **Interaksi:** Notebook dilengkapi dengan UI interaktif (`ipywidgets`) untuk memvisualisasikan data gambar dan label secara *real-time* (Selesai).
-
-### 3. Tahap Preprocessing & Modeling (WIP)
-
-File: `backend/Food_Captioning_Training.ipynb`
-
-  - **Tujuan:** Mengubah data mentah menjadi format yang dapat dilatih model CNN.
-  - **Preprocessing Teks:**
-      - Kolom `ingredients` berhasil dikonversi dari *string* JSON menjadi *list* Python.
-      - Implementasi `MultiLabelBinarizer` dari `scikit-learn` untuk mengubah `ingredients` menjadi vektor biner ($Y$).
-  - **Preprocessing Gambar (WIP):**
-      - Skema `ImageDataGenerator` Keras sudah disiapkan untuk *resizing* (ke **224x224**) dan **augmentasi** data *training*.
-  - **Model Arsitektur:**
-      - **Backbone:** EfficientNetB0 (Pre-trained on ImageNet).
-      - **Head:** Multi-Label Classification Head dengan aktivasi **Sigmoid** dan *loss function* **Binary Crossentropy**.
+Proyek ini adalah implementasi **Multi-Label Classification** menggunakan *Convolutional Neural Network* (CNN) untuk memprediksi daftar bahan (`ingredients`) dari sebuah gambar masakan. Kami memanfaatkan arsitektur **EfficientNetB0** sebagai *feature extractor*.
 
 -----
 
-## 🚧 Known Issues (Masalah yang Diketahui)
+## 👥 Tim Pengembang
 
-1.  **Image Loading:** Gambar belum diunduh secara lokal. Langkah selanjutnya adalah menyiapkan *script* pengunduhan gambar (dari `image_url`) agar dapat diakses oleh `ImageDataGenerator`.
-2.  **Model Loading Error:** Terdapat `ValueError: Shape mismatch` saat meload bobot `EfficientNetB0` dengan `input_tensor` kustom. Ini akan diatasi dengan penyesuaian *input layer* lebih lanjut atau mencoba versi TensorFlow/Keras yang berbeda.
+| Nama | NIM | Kontak |
+| :--- | :--- | :--- |
+| **Muhammad Affif** | 24225045 | [affif@nourivex.tech](mailto:affif@nourivex.tech) |
+| **Muhamad Fahren Andrean Rangkuti** | 23215030 | [kevinkaslana002@gmail.com](mailto:kevinkaslana002@gmail.com) |
+| **Putri Areka Sandra** | 23215007 | [putriareka312@gmail.com](mailto:mailto:putriareka312@gmail.com) |
 
-<!-- end list -->
+-----
+
+## 🚀 Commit Pertama: Initial Setup & Data Inspection
+
+### 1\. Environment Setup
+
+Proyek ini dibangun di atas Python 3.10 dan dikelola menggunakan **Conda** untuk isolasi *environment* dan **Pip** untuk manajemen paket, menjamin reproduktifitas pada *platform* Windows, Linux, dan macOS.
+
+Untuk memulai, aktifkan *environment* yang sudah dibuat (`penelitian`), lalu instal semua dependensi:
+
+```bash
+conda activate penelitian
+pip install -r requirements.txt
+```
+
+-----
+
+### 2\. Tahap Eksplorasi Data (EDA)
+
+Analisis awal data dilakukan di *Jupyter Notebook*: `backend/Cek_data-food.ipynb`.
+
+  - **Dataset:** **MM-Food-100k.csv** (Total **100.000** observasi).
+  - **Fitur Kunci:**
+      - **Input ($\mathbf{X}$):** `image_url`
+      - **Output ($\mathbf{Y}$):** `ingredients` (Multi-Label).
+  - **Inspeksi Kualitas Data (Missing Values):**
+      - Kolom `dish_name`: Terdapat 2 data *missing* (99,998 data *non-null*).
+      - Kolom `cooking_method`: Terdapat 1,358 data *missing* (98,642 data *non-null*).
+  - **Keunggulan Notebook:** Dilengkapi dengan **UI interaktif (`ipywidgets`)** untuk visualisasi *real-time* gambar dan atribut data.
+
+-----
+
+### 3\. Tahap Preprocessing & Modeling (Work In Progress)
+
+Pekerjaan pada tahapan *training* berpusat pada *Notebook*: `backend/Food_Captioning_Training.ipynb`.
+
+#### Preprocessing Teks (Label)
+
+  - Kolom `ingredients` berhasil dikonversi dari format *string* JSON menjadi *list* Python.
+  - Dilakukan **Multi-Label Binarization** menggunakan `MultiLabelBinarizer` dari `scikit-learn` untuk menghasilkan vektor biner $Y$.
+
+#### Preprocessing Gambar
+
+  - Skema *image data generator* Keras telah disiapkan untuk **Image Resizing** (ke **224x224**) dan **Data Augmentation** pada *training set*.
+
+#### Model Arsitektur
+
+  - **Backbone CNN:** EfficientNetB0 (Menggunakan *pre-trained weights* dari ImageNet).
+  - **Classification Head (Custom):**
+      - Aktivasi *output*: **Sigmoid** (Wajib untuk Multi-Label).
+      - *Loss function*: **Binary Crossentropy** (Wajib untuk Multi-Label).
+
+-----
+
+## 🚧 Known Issues & Next Steps
+
+| Kategori | Masalah | Rencana Tindak Lanjut |
+| :--- | :--- | :--- |
+| **Data I/O** | Gambar belum diunduh secara lokal (saat ini masih berupa URL). | Menyiapkan *script* pengunduhan gambar (dari `image_url`) agar dapat diakses oleh `ImageDataGenerator` Keras. |
+| **Modeling** | Terjadi `ValueError: Shape mismatch` saat meload bobot `EfficientNetB0`. | Mengatasi konflik *input layer* dengan **`tf.keras.layers.Input`** eksplisit atau menyesuaikan versi TensorFlow/Keras. |
 
